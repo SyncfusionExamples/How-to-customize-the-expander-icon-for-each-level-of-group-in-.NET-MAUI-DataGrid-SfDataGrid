@@ -1,0 +1,81 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:syncfusion="clr-namespace:Syncfusion.Maui.DataGrid;assembly=Syncfusion.Maui.DataGrid"
+             xmlns:local="clr-namespace:SfDataGridSample"
+             x:Class="SfDataGridSample.MainPage">
+
+    <ContentPage.BindingContext>
+        <local:EmployeeViewModel />
+    </ContentPage.BindingContext>
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <local:GroupCaptionConverter x:Key="SummaryConverter" />
+            <local:GroupBackgroundColor x:Key="SummaryBackground" />
+            <local:GroupIconConverter x:Key="SummaryIcon"></local:GroupIconConverter>
+            <Style  TargetType="syncfusion:DataGridIndentCell">
+                <Setter Property="Background"
+                        Value="White" />
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+
+    <syncfusion:SfDataGrid  ItemsSource="{Binding Employees}"
+                            AutoGenerateColumnsMode="None"
+                            GroupingMode="Multiple"
+                            GridLinesVisibility="Vertical"
+                            HeaderGridLinesVisibility="Both"
+                            AllowGroupExpandCollapse="False"
+                            x:Name="dataGrid"
+                            ColumnWidthMode="Auto"
+                            DefaultColumnWidth="155">
+        <syncfusion:SfDataGrid.Columns>
+            <syncfusion:DataGridTextColumn MappingName="EmployeeID"
+                                           HeaderText="Employee ID" />
+            <syncfusion:DataGridTextColumn MappingName="Name"
+                                           HeaderText="Name" />
+            <syncfusion:DataGridTextColumn MappingName="IDNumber"
+                                           HeaderText="ID Number" />
+        </syncfusion:SfDataGrid.Columns>
+
+        <syncfusion:SfDataGrid.CaptionSummaryTemplate>
+            <DataTemplate>
+                <Grid Padding="5"
+                      HorizontalOptions="FillAndExpand"
+                      BackgroundColor="{Binding Converter={StaticResource SummaryBackground}, ConverterParameter={x:Reference dataGrid}}">
+
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="Auto"></ColumnDefinition>
+                        <ColumnDefinition Width="*"></ColumnDefinition>
+                    </Grid.ColumnDefinitions>
+                    <Label Grid.Column="1"
+                           x:Name="captionSummary"
+                           HorizontalOptions="StartAndExpand"
+                           VerticalOptions="FillAndExpand"
+                           WidthRequest="250"
+                           Text="{Binding Converter={StaticResource SummaryConverter}, 
+                                                  ConverterParameter = {x:Reference dataGrid} }">
+
+                    </Label>
+                    <Image Grid.Column="0"
+                           WidthRequest="35"
+                           Source="{Binding Converter={StaticResource SummaryIcon}, ConverterParameter={x:Reference dataGrid}}"
+                           VerticalOptions="Center"
+                           HorizontalOptions="End"
+                           HeightRequest="20">
+
+                    </Image>
+                </Grid>
+            </DataTemplate>
+        </syncfusion:SfDataGrid.CaptionSummaryTemplate>
+
+        <syncfusion:SfDataGrid.GroupColumnDescriptions>
+            <syncfusion:GroupColumnDescription ColumnName="EmployeeID" />
+            <syncfusion:GroupColumnDescription ColumnName="Name" />
+        </syncfusion:SfDataGrid.GroupColumnDescriptions>
+
+    </syncfusion:SfDataGrid>
+
+</ContentPage>
